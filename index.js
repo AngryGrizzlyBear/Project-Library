@@ -14,6 +14,7 @@ function Book(title, author, genre, pages, read) {
 
 }
 
+
 function addBookToLibrary(title, author, genre, pages, read) {
     const newBook = new Book(title, author, genre, pages, read); // Create a new book using provided argumenets
     myLibrary.push(newBook); // add the new book to the array
@@ -21,8 +22,8 @@ function addBookToLibrary(title, author, genre, pages, read) {
 
 }
 
-addBookToLibrary("The Great Gatsby", "F.Scott Fitzgerald", "Fiction");
-addBookToLibrary("1984", "George Orwell", "Dystopian")
+// addBookToLibrary("The Great Gatsby", "F.Scott Fitzgerald", "Fiction");
+// addBookToLibrary("1984", "George Orwell", "Dystopian")
 
 
 function displayBooks() {
@@ -33,7 +34,6 @@ function displayBooks() {
     myLibrary.forEach(book => {
         const bookCard = document.createElement('div');  // I messed up on this a LOT. Creates a div for each book.
         bookCard.classList.add('book-card');    // Helps with styling
-
         // Creates the book details inside of the card
         bookCard.innerHTML = `
         <h2>${book.title}</h2>
@@ -43,6 +43,7 @@ function displayBooks() {
         <p><strong>Read:</strong>${book.read ? 'Yes' : 'No'}</p>
         <p><strong>ID:</strong>${book.id}</p>
         <button class="remove-btn" data-id="${book.id}">Remove Book</button>
+        <button class="toggle-read-btn" data-id="${book.id}">Toggle Read Status</button>
         `;
         // appends the card to the container
         container.appendChild(bookCard);
@@ -52,7 +53,35 @@ function displayBooks() {
     document.querySelectorAll('.remove-btn').forEach(button => {
         button.addEventListener('click', removeBook);
     });
+    // Add event listeners to toggle read status buttons
+    document.querySelectorAll('.toggle-read-btn').forEach(button => {
+        button.addEventListener('click', toggleReadStatus);
+    });
+
 }
+
+
+function removeBook(event) {
+    const bookId = event.target.getAttribute('data-id'); // Getting the book id from data attribute
+    const bookIndex = myLibrary.findIndex(book => book.id === bookId); // Find the book in the array
+
+    if (bookIndex !== -1) {
+        myLibrary.splice(bookIndex, 1); // Remove the book from the array
+        displayBooks(); // Update the display after removal
+    }
+}
+
+// toggle the read status of a book
+function toggleReadStatus(event) {
+    const bookId = event.target.getAttribute('data-id');
+    const book = myLibrary.find(book => book.id === bookId);
+
+    if (book) {
+        book.toggleReadStatus(); // toggle read status
+        displayBooks(); //Update the display after the status change
+    }
+}
+
 
 // Making an event listener for the "New Book" button
 document.getElementById('new-book-btn').addEventListener('click', function () {
@@ -70,32 +99,27 @@ document.getElementById('book-form').addEventListener('submit', function (event)
     event.preventDefault();
 
     // Input Values
-const title = document.getElementById('title').value;
-const author = document.getElementById('author').value;
-const pages = document.getElementById('pages').value;
-const read = document.getElementById('read').checked;
-const genre = "Unknown"; // Extended to allow input of genre
+    const title = document.getElementById('title').value;
+    const author = document.getElementById('author').value;
+    const pages = document.getElementById('pages').value;
+    const read = document.getElementById('read').checked;
+    const genre = "Unknown"; // Extended to allow input of genre
 
-// Add the new book to the library
-addBookToLibrary(title, author, genre, pages, read);
+    // Add the new book to the library
+    addBookToLibrary(title, author, genre, pages, read);
 
-// Close the form after submission
-document.getElementById('book-form-container').style.display = 'none';
+    // Close the form after submission
+    document.getElementById('book-form-container').style.display = 'none';
 
-// Reset form
-document.getElementById('book-form').reset();
+    // Reset form
+    document.getElementById('book-form').reset();
 
 })
 
-function removeBook(event) {
-    const bookId = event.target.getAttribute('data-id'); // Getting the book id from data attribute
-    const bookIndex = myLibrary.findIndex(book => book.id === bookId); // Find the book in the array
+Book.prototype.toggleReadStatus = function () {
+    this.read = !this.read;
+};
 
-    if (bookIndex !== -1) {
-        myLibrary.splice(bookIndex, 1); // Remove the book from the array
-        displayBooks(); // Update the display after removal
-    }
-}
 
 
 
