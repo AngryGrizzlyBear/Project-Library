@@ -1,8 +1,8 @@
 const myLibrary = [];
 
-myLibrary.push(new Book("The Great Gatsby", "F. Scott Fitzgerald", "Fiction"));
-myLibrary.push(new Book("1984", "George Orwell", "Dystopian"));
-myLibrary.push(new Book("To Kill a Mockingbird", "Harper Lee", "Classic"));
+myLibrary.push(new Book("The Great Gatsby", "F. Scott Fitzgerald", "Fiction", 432));
+myLibrary.push(new Book("1984", "George Orwell", "Dystopian", 432));
+myLibrary.push(new Book("To Kill a Mockingbird", "Harper Lee", "Classic", 293));
 
 function Book(title, author, genre, pages, read) {
     this.id = crypto.randomUUID(); //Unique ID for each book
@@ -81,7 +81,6 @@ function toggleReadStatus(event) {
         displayBooks(); //Update the display after the status change
     }
 }
-
 
 // Making an event listener for the "New Book" button
 document.getElementById('new-book-btn').addEventListener('click', function () {
