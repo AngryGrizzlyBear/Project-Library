@@ -93,7 +93,17 @@ document.getElementById('book-form').addEventListener('submit', function (event)
     const read = document.getElementById('read').checked;
     const genre = "Unknown";
 
-    addBookToLibrary(title, author, genre, pages, read);
+    if (title === '' || author === '' || pages === '') {
+        alert('Please fill in all fields');
+        return;
+    }
+
+    if (isNaN(pages) || Number(pages) <= 0) {
+        alert('Pages must be a positive number.');
+        return;
+    }
+
+    addBookToLibrary(title, author, genre, Number(pages), read);
 
     document.getElementById('book-form-container').style.display = 'none';
     document.getElementById('book-form').reset();
